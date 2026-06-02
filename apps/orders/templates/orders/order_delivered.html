@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>পণ্য ডেলিভারি সম্পন্ন</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: Arial, sans-serif; }
+    .wrapper { max-width: 620px; margin: 32px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #059669, #10b981); padding: 32px 40px; text-align: center; }
+    .header h1 { margin: 0; color: #ffffff; font-size: 22px; }
+    .header p { margin: 6px 0 0; color: #a7f3d0; font-size: 14px; }
+    .hero { text-align: center; padding: 32px 40px 0; }
+    .hero .icon { font-size: 56px; margin-bottom: 8px; }
+    .hero h2 { font-size: 20px; color: #111827; margin: 0 0 4px; }
+    .hero p { font-size: 14px; color: #6b7280; margin: 0; }
+    .body { padding: 24px 40px 32px; }
+    .order-box { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; padding: 20px 24px; margin: 24px 0; }
+    .order-box .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .order-box .value { font-size: 18px; font-weight: 700; color: #065f46; }
+    .badge { display: inline-block; background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 8px; }
+    .timeline { display: flex; justify-content: space-between; align-items: center; margin: 24px 0; }
+    .step { text-align: center; flex: 1; }
+    .step .dot { width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: #10b981; color: #fff; }
+    .step .step-label { font-size: 11px; color: #6b7280; }
+    .connector { flex: 1; height: 2px; background: #10b981; margin-bottom: 20px; }
+    .review-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 20px 24px; margin: 24px 0; text-align: center; }
+    .review-box p { font-size: 14px; color: #92400e; margin: 0 0 12px; }
+    .review-box .stars { font-size: 28px; letter-spacing: 4px; }
+    .section-title { font-size: 14px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #374151; }
+    .item-row:last-child { border-bottom: none; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #6b7280; padding: 6px 0; }
+    .summary-row.total { font-size: 16px; font-weight: 700; color: #111827; border-top: 2px solid #e5e7eb; margin-top: 8px; padding-top: 12px; }
+    .footer { background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 20px 40px; text-align: center; }
+    .footer p { margin: 4px 0; font-size: 12px; color: #9ca3af; }
+    .footer a { color: #10b981; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <h1>📦 পণ্য ডেলিভারি সম্পন্ন!</h1>
+    <p>আপনার অর্ডার সফলভাবে ডেলিভারি হয়েছে।</p>
+  </div>
+
+  <div class="hero">
+    <div class="icon">🎉</div>
+    <h2>ধন্যবাদ কেনাকাটার জন্য!</h2>
+    <p>আশা করি আপনি পণ্যটি পেয়েছেন এবং সন্তুষ্ট হয়েছেন।</p>
+  </div>
+
+  <div class="body">
+
+    <p style="font-size:14px;color:#374151;">প্রিয় <strong>{{ full_name }}</strong>,</p>
+    <p style="font-size:14px;color:#6b7280;">আপনার অর্ডার <strong>{{ order_number }}</strong> সফলভাবে ডেলিভারি হয়েছে।</p>
+
+    <!-- Order Box -->
+    <div class="order-box">
+      <div class="label">অর্ডার নম্বর</div>
+      <div class="value">{{ order_number }}</div>
+      <div><span class="badge">✅ Delivered</span></div>
+    </div>
+
+    <!-- Full Timeline -->
+    <div class="timeline">
+      <div class="step"><div class="dot">✓</div><div class="step-label">Pending</div></div>
+      <div class="connector"></div>
+      <div class="step"><div class="dot">✓</div><div class="step-label">Confirmed</div></div>
+      <div class="connector"></div>
+      <div class="step"><div class="dot">✓</div><div class="step-label">Shipped</div></div>
+      <div class="connector"></div>
+      <div class="step"><div class="dot">📦</div><div class="step-label">Delivered</div></div>
+    </div>
+
+    <!-- Items -->
+    <p class="section-title">অর্ডারকৃত পণ্যসমূহ</p>
+    {% for item in items %}
+    <div class="item-row">
+      <span>{{ item.product_name }}</span>
+      <span style="color:#6b7280;">× {{ item.quantity }}</span>
+      <span style="font-weight:600;">৳{{ item.line_total }}</span>
+    </div>
+    {% endfor %}
+
+    <div style="margin-top:16px;">
+      <div class="summary-row"><span>সাবটোটাল</span><span>৳{{ subtotal }}</span></div>
+      <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>৳{{ delivery_charge }}</span></div>
+      <div class="summary-row total"><span>মোট</span><span>৳{{ total_amount }}</span></div>
+    </div>
+
+    <!-- Review Request -->
+    <div class="review-box">
+      <p>আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ। পণ্যটি রেটিং দিন!</p>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p style="font-size:12px;margin-top:8px;">আপনার অ্যাকাউন্টে লগইন করে পণ্যের রিভিউ দিন।</p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>আবার কেনাকাটায় স্বাগতম! 🛍️</p>
+    <p><strong>Shaistaganj E-shop</strong></p>
+    <p>সাপোর্ট: <a href="mailto:{{ support_email }}">{{ support_email }}</a></p>
+  </div>
+
+</div>
+</body>
+</html>

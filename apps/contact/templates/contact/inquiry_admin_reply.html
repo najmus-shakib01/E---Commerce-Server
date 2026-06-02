@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>আপনার ইনকোয়ারির উত্তর — Shaistaganj E-shop</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #1f2937;
+    }
+    .wrapper {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+      padding: 34px 32px;
+      text-align: center;
+    }
+    .header .icon-circle {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 12px;
+    }
+    .header h1 { font-size: 21px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+    .header .subtitle { font-size: 13px; color: #c7d2fe; }
+
+    .body { padding: 30px 32px; }
+    .greeting { font-size: 15px; color: #374151; line-height: 1.7; margin-bottom: 22px; }
+
+    /* Original inquiry ref */
+    .ref-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .ref-box .ref-label {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: #94a3b8; margin-bottom: 6px;
+    }
+    .ref-box .ref-subject {
+      font-size: 14px; font-weight: 600; color: #1e293b;
+    }
+    .ref-box .ref-msg {
+      margin-top: 8px;
+      font-style: italic;
+      color: #6b7280;
+      border-left: 3px solid #cbd5e1;
+      padding-left: 10px;
+      white-space: pre-wrap;
+    }
+
+    /* Admin reply */
+    .reply-section-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: #4338ca; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .reply-box {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-left: 4px solid #4338ca;
+      border-radius: 0 8px 8px 0;
+      padding: 18px 20px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #1e1b4b;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 24px;
+    }
+
+    .info-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #15803d;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    hr { border: none; border-top: 1px solid #f1f5f9; margin: 20px 0; }
+
+    .signoff { font-size: 14px; color: #374151; line-height: 1.8; }
+    .signoff .brand-name { font-weight: 700; color: #4338ca; }
+
+    .footer {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 18px 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.8;
+    }
+    .footer a { color: #6b7280; text-decoration: none; }
+    .footer strong { color: #4b5563; font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="icon-circle">💬</div>
+    <h1>আপনার ইনকোয়ারির উত্তর এসেছে</h1>
+    <div class="subtitle">Shaistaganj E-shop সাপোর্ট টিমের পক্ষ থেকে</div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <p class="greeting">
+      প্রিয় <strong>{{ inquiry.name }}</strong>,<br/><br/>
+      আপনার পাঠানো ইনকোয়ারির উত্তর নিচে দেওয়া হলো।
+      আমরা আশা করি এটি আপনার সমস্যার সমাধান করবে।
+    </p>
+
+    <!-- Original inquiry reference -->
+    <div class="ref-box">
+      <div class="ref-label">📎 আপনার মূল প্রশ্ন ছিল</div>
+      <div class="ref-subject">{{ inquiry.subject_bangla }} — {{ inquiry.created_at|date:"d M Y" }}</div>
+      <div class="ref-msg">{{ inquiry.message|truncatechars:200 }}</div>
+    </div>
+
+    <!-- Admin Reply -->
+    <div class="reply-section-label">
+      ✉️ আমাদের উত্তর
+    </div>
+    <div class="reply-box">{{ reply_message }}</div>
+
+    <div class="info-box">
+      <strong>❓ আরও প্রশ্ন আছে?</strong><br/>
+      এই ইমেইলে সরাসরি রিপ্লাই করুন — আমাদের টিম আবার সাহায্য করবে।
+      অথবা আমাদের ওয়েবসাইটের Contact Us পেজ থেকে নতুন ইনকোয়ারি পাঠান।
+    </div>
+
+    <hr/>
+
+    <div class="signoff">
+      আন্তরিক শুভেচ্ছায়,<br/>
+      <span class="brand-name">Shaistaganj E-shop</span> সাপোর্ট টিম<br/>
+      শায়েস্তাগঞ্জ, হবিগঞ্জ
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>Shaistaganj E-shop</strong><br/>
+    শায়েস্তাগঞ্জ, হবিগঞ্জ, সিলেট, বাংলাদেশ<br/>
+    <a href="mailto:support@shaistaganjeshop.com">support@shaistaganjeshop.com</a><br/>
+    &copy; {% now "Y" %} Shaistaganj E-shop. All rights reserved.
+  </div>
+
+</div>
+</body>
+</html>

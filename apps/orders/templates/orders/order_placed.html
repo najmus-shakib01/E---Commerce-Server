@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>অর্ডার কনফার্মেশন</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: Arial, sans-serif; }
+    .wrapper { max-width: 620px; margin: 32px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background-color: #10b981; padding: 32px 40px; text-align: center; }
+    .header h1 { margin: 0; color: #ffffff; font-size: 22px; letter-spacing: 0.5px; }
+    .header p { margin: 6px 0 0; color: #d1fae5; font-size: 14px; }
+    .body { padding: 32px 40px; }
+    .greeting { font-size: 16px; color: #374151; margin-bottom: 20px; }
+    .order-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px 24px; margin-bottom: 24px; }
+    .order-box .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .order-box .value { font-size: 18px; font-weight: 700; color: #111827; }
+    .badge { display: inline-block; background: #fef3c7; color: #d97706; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 8px; }
+    .section-title { font-size: 14px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #374151; }
+    .item-row:last-child { border-bottom: none; }
+    .item-name { flex: 1; }
+    .item-qty { color: #6b7280; margin: 0 16px; }
+    .item-price { font-weight: 600; color: #111827; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #6b7280; padding: 6px 0; }
+    .summary-row.total { font-size: 16px; font-weight: 700; color: #111827; border-top: 2px solid #e5e7eb; margin-top: 8px; padding-top: 12px; }
+    .info-grid { display: flex; gap: 16px; margin-bottom: 24px; }
+    .info-block { flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 16px; }
+    .info-block .info-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .info-block .info-value { font-size: 13px; color: #374151; font-weight: 600; line-height: 1.4; }
+    .footer { background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 20px 40px; text-align: center; }
+    .footer p { margin: 4px 0; font-size: 12px; color: #9ca3af; }
+    .footer a { color: #10b981; text-decoration: none; }
+    .note { background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px; padding: 12px 16px; font-size: 13px; color: #1e40af; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>✅ অর্ডার সফলভাবে গ্রহণ করা হয়েছে!</h1>
+    <p>আপনার অর্ডারটি আমাদের কাছে পৌঁছেছে। শীঘ্রই প্রক্রিয়া শুরু হবে।</p>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <p class="greeting">প্রিয় <strong>{{ full_name }}</strong>,</p>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:24px;">
+      আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। নিচে আপনার অর্ডারের বিস্তারিত তথ্য দেওয়া হলো।
+    </p>
+
+    <!-- Order Number & Status -->
+    <div class="order-box">
+      <div class="label">অর্ডার নম্বর</div>
+      <div class="value">{{ order_number }}</div>
+      <div><span class="badge">⏳ Pending — প্রসেসিং অপেক্ষায়</span></div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="info-grid">
+      <div class="info-block">
+        <div class="info-label">পেমেন্ট পদ্ধতি</div>
+        <div class="info-value">{{ payment_method_display }}</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">ডেলিভারি জোন</div>
+        <div class="info-value">{{ delivery_zone_display }}</div>
+      </div>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="info-block" style="margin-bottom:24px;">
+      <div class="info-label">ডেলিভারি ঠিকানা</div>
+      <div class="info-value">{{ shipping_address }}</div>
+    </div>
+
+    <!-- Order Items -->
+    <p class="section-title">অর্ডারকৃত পণ্যসমূহ</p>
+    {% for item in items %}
+    <div class="item-row">
+      <span class="item-name">{{ item.product_name }}</span>
+      <span class="item-qty">× {{ item.quantity }}</span>
+      <span class="item-price">৳{{ item.line_total }}</span>
+    </div>
+    {% endfor %}
+
+    <!-- Summary -->
+    <div style="margin-top:16px;">
+      <div class="summary-row"><span>সাবটোটাল</span><span>৳{{ subtotal }}</span></div>
+      <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>৳{{ delivery_charge }}</span></div>
+      <div class="summary-row total"><span>মোট পরিমাণ</span><span>৳{{ total_amount }}</span></div>
+    </div>
+
+    <!-- Note for MANUAL_MFS -->
+    {% if is_manual_payment %}
+    <div class="note" style="margin-top:24px;">
+      <strong>📌 গুরুত্বপূর্ণ:</strong> আপনি Manual Mobile Banking/Bank পেমেন্ট সিলেক্ট করেছেন।
+      অনুগ্রহ করে ট্রানজেকশন আইডি ও স্ক্রিনশট আমাদের পেমেন্ট পেজে আপলোড করুন।
+      অ্যাডমিন যাচাই করার পরে আপনার অর্ডার কনফার্ম হবে।
+    </div>
+    {% endif %}
+
+    {% if is_cod %}
+    <div class="note" style="margin-top:24px;">
+      <strong>📌 নোট:</strong> আপনি Cash on Delivery সিলেক্ট করেছেন।
+      পণ্য ডেলিভারির সময় ৳{{ total_amount }} পরিশোধ করতে হবে।
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>ধন্যবাদ আমাদের সাথে কেনাকাটা করার জন্য 🛍️</p>
+    <p><strong>Shaistaganj E-shop</strong></p>
+    <p>যেকোনো সমস্যায় <a href="mailto:{{ support_email }}">{{ support_email }}</a> তে যোগাযোগ করুন</p>
+  </div>
+
+</div>
+</body>
+</html>

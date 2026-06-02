@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>অর্ডার শিপড</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f4f6f8; font-family: Arial, sans-serif; }
+    .wrapper { max-width: 620px; margin: 32px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #7c3aed, #8b5cf6); padding: 32px 40px; text-align: center; }
+    .header h1 { margin: 0; color: #ffffff; font-size: 22px; }
+    .header p { margin: 6px 0 0; color: #ede9fe; font-size: 14px; }
+    .body { padding: 32px 40px; }
+    .greeting { font-size: 16px; color: #374151; margin-bottom: 20px; }
+    .order-box { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 20px 24px; margin-bottom: 24px; }
+    .order-box .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .order-box .value { font-size: 18px; font-weight: 700; color: #5b21b6; }
+    .badge { display: inline-block; background: #ede9fe; color: #7c3aed; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 8px; }
+    .tracking-box { background: #f9fafb; border: 2px dashed #c4b5fd; border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; text-align: center; }
+    .tracking-box .track-label { font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .tracking-box .courier { font-size: 16px; font-weight: 700; color: #374151; margin-bottom: 4px; }
+    .tracking-box .tracking-id { font-size: 20px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; }
+    .timeline { display: flex; justify-content: space-between; align-items: center; margin: 28px 0; }
+    .step { text-align: center; flex: 1; }
+    .step .dot { width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+    .step .dot.done { background: #8b5cf6; color: #fff; }
+    .step .dot.active { background: #8b5cf6; color: #fff; box-shadow: 0 0 0 4px #ddd6fe; }
+    .step .dot.pending { background: #e5e7eb; color: #9ca3af; }
+    .step .step-label { font-size: 11px; color: #6b7280; }
+    .connector { flex: 1; height: 2px; background: #e5e7eb; margin-bottom: 20px; }
+    .connector.done { background: #8b5cf6; }
+    .info-block { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+    .info-block .info-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .info-block .info-value { font-size: 13px; color: #374151; font-weight: 600; line-height: 1.4; }
+    .section-title { font-size: 14px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #374151; }
+    .item-row:last-child { border-bottom: none; }
+    .footer { background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 20px 40px; text-align: center; }
+    .footer p { margin: 4px 0; font-size: 12px; color: #9ca3af; }
+    .footer a { color: #8b5cf6; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <h1>🚚 আপনার পণ্য পাঠানো হয়েছে!</h1>
+    <p>পণ্য কুরিয়ারে দেওয়া হয়েছে, শীঘ্রই পৌঁছে যাবে।</p>
+  </div>
+
+  <div class="body">
+
+    <p class="greeting">প্রিয় <strong>{{ full_name }}</strong>,</p>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:24px;">
+      সুখবর! আপনার অর্ডারটি কুরিয়ারে পাঠিয়ে দেওয়া হয়েছে।
+    </p>
+
+    <!-- Order Box -->
+    <div class="order-box">
+      <div class="label">অর্ডার নম্বর</div>
+      <div class="value">{{ order_number }}</div>
+      <div><span class="badge">🚚 Shipped</span></div>
+    </div>
+
+    <!-- Tracking Info -->
+    {% if courier_name or tracking_id %}
+    <div class="tracking-box">
+      <div class="track-label">ট্র্যাকিং তথ্য</div>
+      {% if courier_name %}
+      <div class="courier">{{ courier_name }}</div>
+      {% endif %}
+      {% if tracking_id %}
+      <div class="tracking-id">{{ tracking_id }}</div>
+      {% else %}
+      <div style="font-size:13px;color:#9ca3af;">ট্র্যাকিং আইডি শীঘ্রই আপডেট হবে</div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <div class="step"><div class="dot done">✓</div><div class="step-label">Pending</div></div>
+      <div class="connector done"></div>
+      <div class="step"><div class="dot done">✓</div><div class="step-label">Confirmed</div></div>
+      <div class="connector done"></div>
+      <div class="step"><div class="dot active">🚚</div><div class="step-label">Shipped</div></div>
+      <div class="connector"></div>
+      <div class="step"><div class="dot pending">📦</div><div class="step-label">Delivered</div></div>
+    </div>
+
+    <!-- Address -->
+    <div class="info-block">
+      <div class="info-label">ডেলিভারি ঠিকানা</div>
+      <div class="info-value">{{ shipping_address }}</div>
+    </div>
+
+    <!-- Items -->
+    <p class="section-title">অর্ডারকৃত পণ্যসমূহ</p>
+    {% for item in items %}
+    <div class="item-row">
+      <span>{{ item.product_name }}</span>
+      <span style="color:#6b7280;">× {{ item.quantity }}</span>
+      <span style="font-weight:600;">৳{{ item.line_total }}</span>
+    </div>
+    {% endfor %}
+
+    <div style="margin-top:16px;text-align:right;">
+      <span style="font-size:16px;font-weight:700;color:#111827;">মোট: ৳{{ total_amount }}</span>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>ধৈর্য্য ধারণ করুন, পণ্য শীঘ্রই পৌঁছাবে 🙏</p>
+    <p><strong>Shaistaganj E-shop</strong></p>
+    <p>সাপোর্ট: <a href="mailto:{{ support_email }}">{{ support_email }}</a></p>
+  </div>
+
+</div>
+</body>
+</html>
